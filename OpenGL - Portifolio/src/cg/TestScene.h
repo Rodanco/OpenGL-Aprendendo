@@ -35,7 +35,7 @@ public:
 			glm::vec3(1.f,  1.f,  1.f)
 		);
 
-		mesh = MeshFactory::LoadTerrain("res/Images/volcano.jpg", .2f, 3);
+		mesh = MeshFactory::LoadTerrain("res/Images/volcano.jpg", .1f, 3);
 		material = new PhongMaterial(
 			glm::vec3(1.f, 1.f, 1.f),
 			glm::vec3(.9f, .9f, .9f),

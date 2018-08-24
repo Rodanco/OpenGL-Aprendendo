@@ -148,8 +148,8 @@ public:
 				int tone3 = z > 1 ? img.getPixel(x, z - 1).r : tone1;
 				float h = (tone1 + tone2 + tone3) * scale / 3.f;
 				positions.push_back(glm::vec3( x - hw, h, z - hd ));
-				if (maxHeight < h)
-					maxHeight = h;
+				if (maxHeight < tone1)
+					maxHeight = tone1;
 			}
 
 		//Criacao dos indices
