@@ -9,7 +9,7 @@ class PhongMaterial : public Material
 private:
 	glm::vec3 AmbientColor, DiffuseColor, SpecularColor;
 	float SpecularPower;
-	std::unordered_map<const char*, Texture*> Textures;
+	std::unordered_map<std::string, Texture*> Textures;
 	Shader* shader;
 
 public:
@@ -30,9 +30,13 @@ public:
 	PhongMaterial() : PhongMaterial(glm::vec3(1.f, 1.f, 1.f))
 	{}
 
-	virtual ~PhongMaterial() {}
+	virtual ~PhongMaterial() 
+	{
+		for (auto& entry : Textures)
+			delete entry.second;
+	}
 
-	PhongMaterial* setTexture(const char*name, Texture* texture)
+	PhongMaterial* setTexture(const std::string& name, Texture* texture)
 	{
 		if (texture == nullptr)
 		{
@@ -46,6 +50,12 @@ public:
 			Textures[name] = texture;
 		}
 		return this;
+	}
+
+	PhongMaterial* setTexture(Texture* texture)
+	{
+		std::string aux = "uTex" + std::to_string(Textures.size());
+		return setTexture(aux, texture);
 	}
 
 	// Inherited via Material
@@ -66,7 +76,7 @@ public:
 	virtual void apply() override
 	{
 		shader->setUniform("uAmbientMaterial", AmbientColor)
-			->setUniform("uDiffuseColor", DiffuseColor)
+			->setUniform("uDiffuseMaterial", DiffuseColor)
 			->setUniform("uSpecularMaterial", SpecularColor)
 			->setUniform("uSpecularPower", SpecularPower);
 
@@ -74,8 +84,8 @@ public:
 		for (auto& entry : Textures)
 		{
 			glActiveTexture(GL_TEXTURE0 + texCount);
-			entry.second->Bind();
-			shader->setUniform(entry.first, texCount);
+			entry.second->bind();
+			shader->setUniform(entry.first.c_str(), texCount);
 			texCount += 1;
 		}
 	}

@@ -27,9 +27,12 @@ private:
 
 public:
 
-	Camera(): Position({0,0,3}), Up({0, 1, 0}), Target(0, 0, 0), Fov(glm::radians(60.f)), Near(.1f), Far(1000.f), TargetDirection(glm::normalize(Target - Position))
+	Camera(): Position(glm::vec3(0.f,0.f, 2.f))
 	{
 	}
+
+	Camera(const glm::vec3& position) : Position(position), Up(glm::vec3(0, 1, 0)), Target(glm::vec3(0, 0, 0)), Fov(glm::radians(60.f)), Near(.1f), Far(1000.f), TargetDirection(glm::normalize(Target - Position))
+	{}
 
 	virtual ~Camera() {}
 

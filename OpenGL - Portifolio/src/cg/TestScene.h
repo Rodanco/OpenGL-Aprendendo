@@ -1,21 +1,22 @@
 #pragma once
 #include "../Scene.h"
-#include "../ArrayBuffer.h"
-#include "../IndexBuffer.h"
-#include "../Shader.h"
-#include "MeshFactory.h"
 #include "../Camera.h"
 #include "../Keyboard.h"
+#include "../Shader.h"
+#include "../Phong/DirectionalLight.h"
+#include "../Phong/PhongMaterial.h"
+#include "MeshFactory.h"
 
 
 class TestScene : public Scene
 {
 private:
-	Shader* shader;
+	Keyboard *keys = Keyboard::getInstace();
 	Mesh* mesh;
 	Camera *camera;
 	Matrix4 *world;
-	Keyboard *keys = Keyboard::getInstace();
+	PhongMaterial* material;
+	Light* light;
 
 public:
 
@@ -25,9 +26,25 @@ public:
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_FACE, GL_LINE);
-		camera = new Camera();
-		shader = Shader::loadProgram(2, "Shader.vert", "Shader.frag");
-		mesh = MeshFactory::createCube();
+		camera = new Camera(glm::vec3(0.f, 20.f, 140.f));
+
+		light = new DirectionalLight(
+			glm::vec3(1.f, -1.f, -1.f),
+			glm::vec3(.1f,  .1f,  .1f),
+			glm::vec3(1.f,  1.f,  1.f),
+			glm::vec3(1.f,  1.f,  1.f)
+		);
+
+		mesh = MeshFactory::LoadTerrain("res/Images/volcano.jpg", .2f, 3);
+		material = new PhongMaterial(
+			glm::vec3(1.f, 1.f, 1.f),
+			glm::vec3(.9f, .9f, .9f),
+			glm::vec3(.0f, .0f, .0f), 
+			.0f);
+		material->setTexture(new Texture("res/Textures/snow.jpg"))
+				->setTexture(new Texture("res/Textures/rock.jpg"))
+				->setTexture(new Texture("res/Textures/grass.jpg"))
+				->setTexture(new Texture("res/Textures/sand.jpg"));
 		world = new Matrix4(glm::mat4());
 		mesh->setUniform("uWorld", world);
 	}
@@ -56,11 +73,17 @@ public:
 	virtual void draw() override
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		shader->bind()->set(camera)->unbind();
-		mesh->draw(shader);
+		Shader* shader = material->getShader();
+		shader->bind()->set(camera)->set(light)->unbind();
+		mesh->draw(material);
+
 	}
 	virtual void deinit() override
 	{
-
+		delete material;
+		delete light;
+		delete mesh;
+		delete world;
+		delete camera;
 	}
 };

@@ -96,7 +96,7 @@ Window::Window(Scene * scene, const std::string & title, int width, int height) 
 	init();
 }
 
-Window::Window(Scene * scene, const std::string & title) : Window(scene, title, 800, 600)
+Window::Window(Scene * scene, const std::string & title) : Window(scene, title, 1280, 720)
 {
 }
 

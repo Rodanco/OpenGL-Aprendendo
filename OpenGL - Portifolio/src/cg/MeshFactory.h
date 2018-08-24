@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../MeshBuilder.h"
 #include <time.h>
+#include "SFML/Graphics/Image.hpp"
 
 class MeshFactory
 {
@@ -121,5 +122,130 @@ public:
 
 		delete builder;
 		return mesh;
+	}
+
+	static Mesh* LoadTerrain(const char* filename, float scale, int texRepeat)
+	{
+		sf::Image img;
+		img.loadFromFile(filename);
+		
+		int width = img.getSize().x;
+		int depth = img.getSize().y;
+
+		float hw = width * .5f;
+		float hd = depth * .5f;
+
+		//Cria��o dos vertices
+		int maxHeight = 0;
+		std::vector<glm::vec3> positions;
+		positions.reserve(width * depth);
+		for (int z = 0; z < depth; z++)
+			for (int x = 0; x < width; x++)
+			{
+				const sf::Color& ref = img.getPixel(x, z);
+				int tone1 = ref.r;
+				int tone2 = x > 1 ? img.getPixel(x - 1, z).r : tone1;
+				int tone3 = z > 1 ? img.getPixel(x, z - 1).r : tone1;
+				float h = (tone1 + tone2 + tone3) * scale / 3.f;
+				positions.push_back(glm::vec3( x - hw, h, z - hd ));
+				if (maxHeight < tone1)
+					tone1 = maxHeight;
+			}
+
+		//Criacao dos indices
+		std::vector<GLuint> indices;
+		indices.reserve(6 * (width - 1) * (depth - 1));
+		for (int z = 0; z < depth - 1; z++)
+			for (int x = 0; x < width - 1; x++)
+			{
+				int zero = x + z * width;
+				int one = x + 1 + z * width;
+				int two = x + (z + 1) * width;
+				int three = x + 1 + (z + 1) * width;
+
+				indices.push_back(zero);
+				indices.push_back(three);
+				indices.push_back(one);
+					   
+				indices.push_back(zero);
+				indices.push_back(two);
+				indices.push_back(three);
+			}
+
+
+		//Calculo das Normais
+		int count = positions.size();
+		std::vector<glm::vec3> normals(count);
+		count = indices.size();
+		for (int i = 0; i < count; i += 3)
+		{
+			int i1 = indices[i];
+			int i2 = indices[i + 1];
+			int i3 = indices[i + 2];
+
+			const glm::vec3& v1 = positions[i1];
+			const glm::vec3& v2 = positions[i2];
+			const glm::vec3& v3 = positions[i3];
+
+			glm::vec3 normal = (v2 - v1) * (v3 - v1);
+			normals[i1] += normal;
+			normals[i2] += normal;
+			normals[i3] += normal;
+		}
+		for (glm::vec3& normal : normals)
+			normal = glm::normalize(normal);
+
+		//Calculo das texturas
+		float tx = 1.f / (width * texRepeat);
+		float ty = 1.f / (depth * texRepeat);
+		std::vector<glm::vec2> texCoords;
+		texCoords.reserve((width - 1) * (depth - 1));
+		for (int z = 0; z < depth - 1; z++)
+			for (int x = 0; x < width - 1; x++)
+				texCoords.push_back({ x * tx, z * ty });
+
+		//Calculo dos pesos
+		std::vector<glm::vec4> texWeights;
+		texWeights.reserve(width * depth);
+		for (int z = 0; z < depth; z++)
+			for (int x = 0; x < width; x++)
+			{
+				int tone = img.getPixel(x, z).r;
+				float h = tone / (float)maxHeight;
+				texWeights.push_back(
+					{
+						CalcLienar(.75f, 1.f, h, false),
+						CalcPiramid(.5f, .8f, h),
+						CalcPiramid(.15f, .6f, h),
+						CalcLienar(.0f, .16f, h, true)
+					}
+				);
+			}
+		MeshBuilder *builder = new MeshBuilder();
+		Mesh* mesh = builder->addVector3Attribute("aPosition", positions)
+			->addVector3Attribute("aNormal", normals)
+			->addVector2Attribute("aTexCoord", texCoords)
+			->addVector4Attribute("aTexWeight", texWeights)
+			->setIndexBuffer(indices)
+			->Create();
+		//Mesh* mesh = builder->AddBufferAttribute(new ArrayBuffer(vertexData, count * 12, 12), layout)->Create();
+		delete builder;
+		return mesh;
+
+	}
+
+
+private:
+	static float CalcLienar(float min, float max, float value, bool inverse = false)
+	{
+		float range = max - min;
+		float result = (value - min) / range;
+		result = result < 0 ? 0 : (result > 1 ? 1 : result);
+		return inverse ? 1 - result : result;
+	}
+	static float CalcPiramid(float min, float max, float value)
+	{
+		float mid = (min + max) * .5f;
+		return value > mid ? CalcLienar(mid, max, value, true) : CalcLienar(min, mid, value, false);
 	}
 };

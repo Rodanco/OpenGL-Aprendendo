@@ -40,12 +40,17 @@ public:
 
 	Texture(const char* imagePath) : Texture(imagePath, TextureParameters()) {}
 
-	const GLuint& GetId() const
+	~Texture()
+	{
+		glDeleteTextures(1, &m_id);
+	}
+
+	const GLuint& getId() const
 	{
 		return m_id;
 	}
 
-	const TextureParameters& GetParameters() const
+	const TextureParameters& getParameters() const
 	{
 		return m_parameters;
 	}
@@ -53,19 +58,19 @@ public:
 	void SetParameters(const TextureParameters& parameters)
 	{
 		m_parameters = parameters;
-		Bind();
+		bind();
 		m_parameters.Apply(GL_TEXTURE_2D);
-		Unbind();
+		unbind();
 	}
 
-	Texture& Bind()
+	Texture* bind()
 	{
 		glBindTexture(GL_TEXTURE_2D, m_id);
-		return *this;
+		return this;
 	}
-	Texture& Unbind()
+	Texture* unbind()
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
-		return *this;
+		return this;
 	}
 };
