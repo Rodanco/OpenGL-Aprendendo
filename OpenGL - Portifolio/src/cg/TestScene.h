@@ -76,14 +76,12 @@ public:
 		Shader* shader = material->getShader();
 		shader->bind()->set(camera)->set(light)->unbind();
 		mesh->draw(material);
-
 	}
 	virtual void deinit() override
 	{
 		delete material;
 		delete light;
 		delete mesh;
-		delete world;
 		delete camera;
 	}
 };

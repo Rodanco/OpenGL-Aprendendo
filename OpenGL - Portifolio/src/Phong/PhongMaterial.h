@@ -30,10 +30,11 @@ public:
 	PhongMaterial() : PhongMaterial(glm::vec3(1.f, 1.f, 1.f))
 	{}
 
-	virtual ~PhongMaterial() 
+	virtual ~PhongMaterial() override
 	{
 		for (auto& entry : Textures)
 			delete entry.second;
+		delete shader;
 	}
 
 	PhongMaterial* setTexture(const std::string& name, Texture* texture)

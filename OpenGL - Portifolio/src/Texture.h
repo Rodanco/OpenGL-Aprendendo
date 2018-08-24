@@ -34,8 +34,8 @@ public:
 		if (m_parameters.IsMipMapped())
 			glGenerateMipmap(GL_TEXTURE_2D);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
 		stbi_image_free(data);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
 	Texture(const char* imagePath) : Texture(imagePath, TextureParameters()) {}

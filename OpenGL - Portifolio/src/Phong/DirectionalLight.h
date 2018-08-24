@@ -15,6 +15,11 @@ public:
 	{
 	}
 
+	virtual ~DirectionalLight() override
+	{
+
+	}
+
 	virtual void apply(Shader* shader) override
 	{
 		shader->setUniform("uLightDir", glm::normalize(Direction))

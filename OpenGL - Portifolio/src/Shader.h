@@ -19,6 +19,11 @@ private:
 	Shader(unsigned int id):Id(id) {}
 public:
 	
+	~Shader()
+	{
+		glDeleteProgram(Id);
+	}
+
 	unsigned int getId() const 
 	{ 
 		return Id; 

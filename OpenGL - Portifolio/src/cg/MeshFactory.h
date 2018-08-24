@@ -227,8 +227,7 @@ public:
 			->addVector2Attribute("aTexCoord", texCoords)
 			->addVector4Attribute("aTexWeight", texWeights)
 			->setIndexBuffer(indices)
-			->Create();
-		//Mesh* mesh = builder->AddBufferAttribute(new ArrayBuffer(vertexData, count * 12, 12), layout)->Create();
+			->Create();		
 		delete builder;
 		return mesh;
 

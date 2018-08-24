@@ -42,6 +42,13 @@ public:
 	~Mesh()
 	{
 		glDeleteVertexArrays(1, &Id);
+		delete _IndexBuffer;
+		for (auto& entry : Attributes)
+			delete entry.second;
+		for (auto& entry : Uniforms)
+			delete entry.second;
+		Attributes.clear();
+		Uniforms.clear();
 	}
 
 	Mesh* setUniform(const char* name, Uniform* uniform)

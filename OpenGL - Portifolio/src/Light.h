@@ -4,6 +4,6 @@
 class Light : public ShaderItem
 {
 public:
-	virtual ~Light() {}
+	virtual ~Light() override {}
 	virtual void apply(Shader* shader) = 0;
 };

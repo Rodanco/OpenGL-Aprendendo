@@ -34,7 +34,7 @@ public:
 	Camera(const glm::vec3& position) : Position(position), Up(glm::vec3(0, 1, 0)), Target(glm::vec3(0, 0, 0)), Fov(glm::radians(60.f)), Near(.1f), Far(1000.f), TargetDirection(glm::normalize(Target - Position))
 	{}
 
-	virtual ~Camera() {}
+	virtual ~Camera() override {}
 
 
 	void moveFront(float distance)
