@@ -76,7 +76,13 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\conra\Mega\Outros\glm-0.9.8.5;D:\conra\Mega\Outros\GLFW\include;D:\conra\Mega\Outros\SFML INCLUDES\SFML-2.4.2 - 32bit\include;D:\conra\Mega\Outros\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;SFML_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>D:\conra\Mega\Outros\glew-2.1.0\lib\Release\Win32;D:\conra\Mega\Outros\GLFW\lib-vc2015;D:\conra\Mega\Outros\SFML INCLUDES\SFML-2.4.2 - 32bit\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>jpeg.lib;gdi32.lib;opengl32.lib;freetype.lib;winmm.lib;sfml-system-s-d.lib;sfml-window-s-d.lib;sfml-graphics-s-d.lib;glfw3.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -94,10 +100,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\conra\Mega\Outros\glm-0.9.8.5;D:\conra\Mega\Outros\GLFW\include;D:\conra\Mega\Outros\SFML INCLUDES\SFML-2.4.2 - 32bit\include;D:\conra\Mega\Outros\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLEW_STATIC;SFML_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>D:\conra\Mega\Outros\glew-2.1.0\lib\Release\Win32;D:\conra\Mega\Outros\GLFW\lib-vc2015;D:\conra\Mega\Outros\SFML INCLUDES\SFML-2.4.2 - 32bit\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -115,6 +125,35 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Keyboard.cpp" />
+    <ClCompile Include="src\MAIN.cpp" />
+    <ClCompile Include="src\Window.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ArrayBuffer.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Phong\DirectionalLight.h" />
+    <ClInclude Include="src\cg\MeshFactory.h" />
+    <ClInclude Include="src\Phong\PhongMaterial.h" />
+    <ClInclude Include="src\cg\TestScene.h" />
+    <ClInclude Include="src\Errors.h" />
+    <ClInclude Include="src\IndexBuffer.h" />
+    <ClInclude Include="src\Keyboard.h" />
+    <ClInclude Include="src\Light.h" />
+    <ClInclude Include="src\Material.h" />
+    <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\MeshBuilder.h" />
+    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\ShaderItem.h" />
+    <ClInclude Include="src\Texture.h" />
+    <ClInclude Include="src\TextureParameters.h" />
+    <ClInclude Include="src\Uniform.h" />
+    <ClInclude Include="src\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Shaders\Shader.frag" />
+    <None Include="res\Shaders\Shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
