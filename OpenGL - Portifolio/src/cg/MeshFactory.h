@@ -136,7 +136,7 @@ public:
 		float hd = depth * .5f;
 
 		//Cria��o dos vertices
-		int maxHeight = 0;
+		float maxHeight = 0.f;
 		std::vector<glm::vec3> positions;
 		positions.reserve(width * depth);
 		for (int z = 0; z < depth; z++)
@@ -148,8 +148,8 @@ public:
 				int tone3 = z > 1 ? img.getPixel(x, z - 1).r : tone1;
 				float h = (tone1 + tone2 + tone3) * scale / 3.f;
 				positions.push_back(glm::vec3( x - hw, h, z - hd ));
-				if (maxHeight < tone1)
-					tone1 = maxHeight;
+				if (maxHeight < h)
+					maxHeight = h;
 			}
 
 		//Criacao dos indices
@@ -199,9 +199,9 @@ public:
 		float tx = 1.f / (width * texRepeat);
 		float ty = 1.f / (depth * texRepeat);
 		std::vector<glm::vec2> texCoords;
-		texCoords.reserve((width - 1) * (depth - 1));
-		for (int z = 0; z < depth - 1; z++)
-			for (int x = 0; x < width - 1; x++)
+		texCoords.reserve((width) * (depth));
+		for (int z = 0; z < depth; z++)
+			for (int x = 0; x < width; x++)
 				texCoords.push_back({ x * tx, z * ty });
 
 		//Calculo dos pesos

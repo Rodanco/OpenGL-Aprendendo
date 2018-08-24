@@ -32,7 +32,7 @@ void main() {
 
     vec3 ambient = uAmbientLight * uAmbientMaterial;
     
-    float diffuseIntensity = max(dot(N, -L), 0.0);
+    float diffuseIntensity = max(dot(N, -L), 0.5);
     vec3 diffuse = diffuseIntensity * uDiffuseLight * uDiffuseMaterial;
        
     //Calculo do componente especular

@@ -9,5 +9,4 @@ int main()
 	window->show();
 	delete window;
 	delete scene;
-	while (true);
 }
