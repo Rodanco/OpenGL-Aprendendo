@@ -17,7 +17,7 @@ private:
 	Matrix4 *world;
 	PhongMaterial* material;
 	Light* light;
-	int textureRepeat = 5;
+	int textureRepeat = 10;
 
 public:
 
@@ -34,7 +34,7 @@ public:
 			glm::vec3(1.f,  1.f,  1.f),
 			glm::vec3(1.f,  1.f,  1.f)
 		);
-		mesh = MeshFactory::LoadTerrain("res/Images/chess.jpg", .1f, textureRepeat);
+		mesh = MeshFactory::LoadTerrain("res/Images/volcano.jpg", .1f, textureRepeat);
 		material = new PhongMaterial(
 			glm::vec3(1.f, 1.f, 1.f),
 			glm::vec3(.9f, .9f, .9f),
