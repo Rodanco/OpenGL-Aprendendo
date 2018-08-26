@@ -10,28 +10,28 @@ public:
 	static Mesh* createSquare()
 	{
 		MeshBuilder* builder = new MeshBuilder();
-		std::vector<glm::vec3> posData = 
+		std::vector<glm::vec3> posData =
 		{
 			{-0.5f, -0.5f, 0.5f},
 			{ 0.5f, -0.5f, 0.5f},
 			{ 0.5f,  0.5f, 0.5f},
 			{-0.5f,  0.5f, 0.5f}
 		};
-		std::vector<glm::vec3> colorData = 
+		std::vector<glm::vec3> colorData =
 		{
 			{1.f, 0.f, 0.f},
 			{0.f, 1.f, 0.f},
 			{0.f, 0.f, 1.f},
 			{1.f, 1.f, 1.f}
 		};
-		GLuint indexData[] = 
+		GLuint indexData[] =
 		{
 			0, 1, 3,
 			2, 3, 1
 		};
 		return builder->addVector3Attribute("aPosition", posData)
-					  ->addVector3Attribute("aColor", colorData)
-					  ->setIndexBuffer(indexData, 6)->Create();
+			->addVector3Attribute("aColor", colorData)
+			->setIndexBuffer(indexData, 6)->Create();
 	}
 
 	static Mesh* createCube()
@@ -77,31 +77,31 @@ public:
 				 0.f, 0.f, 1.f,
 				 0.f, 0.f, 1.f,
 				 0.f, 0.f, 1.f,
-				//Face afas da
-				 0.f, 0.f, 1.f,
-				 0.f, 0.f, 1.f,
-				 0.f, 0.f, 1.f,
-				 0.f, 0.f, 1.f,
-				//Face Supe or
-				 0.f, 1.f, 0.f,
-				 0.f, 1.f, 0.f,
-				 0.f, 1.f, 0.f,
-				 0.f, 1.f, 0.f,
-				//Face infe or
-				 0.f, 1.f, 0.f,
-				 0.f, 1.f, 0.f,
-				 0.f, 1.f, 0.f,
-				 0.f, 1.f, 0.f,
-				//Face dire a
-				 1.f, 0.f, 0.f,
-				 1.f, 0.f, 0.f,
-				 1.f, 0.f, 0.f,
-				 1.f, 0.f, 0.f,
-				//Face esqu da
-				 1.f, 0.f, 0.f,
-				 1.f, 0.f, 0.f,
-				 1.f, 0.f, 0.f,
-				 1.f, 0.f, 0.f,
+				 //Face afas da
+				  0.f, 0.f, 1.f,
+				  0.f, 0.f, 1.f,
+				  0.f, 0.f, 1.f,
+				  0.f, 0.f, 1.f,
+				  //Face Supe or
+				   0.f, 1.f, 0.f,
+				   0.f, 1.f, 0.f,
+				   0.f, 1.f, 0.f,
+				   0.f, 1.f, 0.f,
+				   //Face infe or
+					0.f, 1.f, 0.f,
+					0.f, 1.f, 0.f,
+					0.f, 1.f, 0.f,
+					0.f, 1.f, 0.f,
+					//Face dire a
+					 1.f, 0.f, 0.f,
+					 1.f, 0.f, 0.f,
+					 1.f, 0.f, 0.f,
+					 1.f, 0.f, 0.f,
+					 //Face esqu da
+					  1.f, 0.f, 0.f,
+					  1.f, 0.f, 0.f,
+					  1.f, 0.f, 0.f,
+					  1.f, 0.f, 0.f,
 			}
 			)->setIndexBuffer(
 				{
@@ -128,7 +128,7 @@ public:
 	{
 		sf::Image img;
 		img.loadFromFile(filename);
-		
+
 		int width = img.getSize().x;
 		int depth = img.getSize().y;
 
@@ -147,7 +147,7 @@ public:
 				int tone2 = x > 1 ? img.getPixel(x - 1, z).r : tone1;
 				int tone3 = z > 1 ? img.getPixel(x, z - 1).r : tone1;
 				float h = (tone1 + tone2 + tone3) * scale / 3.f;
-				positions.push_back(glm::vec3( x - hw, h, z - hd ));
+				positions.push_back(glm::vec3(x - hw, h, z - hd));
 				if (maxHeight < tone1)
 					maxHeight = tone1;
 			}
@@ -166,7 +166,7 @@ public:
 				indices.push_back(zero);
 				indices.push_back(three);
 				indices.push_back(one);
-					   
+
 				indices.push_back(zero);
 				indices.push_back(two);
 				indices.push_back(three);
@@ -204,7 +204,26 @@ public:
 			for (int x = 0; x < width; x++)
 				texCoords.push_back({ x * tx, z * ty });
 
-		//Calculo dos pesos
+		
+		for (int z = 0; z < depth; z++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				float h = img.getPixel(x, z).r / static_cast<float>(maxHeight);
+				/*sf::Uint8 r = CalcTrapez(0.000f, .0025f, 0.000f, .0010f, h) * 255;
+				sf::Uint8 g = CalcTrapez(.0010f, .0850f, .0025f, .0750f, h) * 255;
+				sf::Uint8 b = CalcTrapez(.0750f, .1500f, .0850f, .1350f, h) * 255;
+				sf::Uint8 a = CalcTrapez(.1350f, 1.000f, .1500f, 1.000f, h) * 255;*/
+				sf::Uint8 r = CalcLienar(.25f, 1.f, h, false) * 255;
+				sf::Uint8 g = CalcPiramid(.15f, .3f, h) *255;
+				sf::Uint8 b = CalcPiramid(.025f, .2f, h) *255;
+				sf::Uint8 a = CalcLienar(.0f, .03f, h, true) * 255;
+				img.setPixel(x, z, { r, g, b, a });
+			}
+		}
+		img.saveToFile("res/Textures/BlendMap.png");
+
+		/*//Calculo dos pesos
 		std::vector<glm::vec4> texWeights;
 		texWeights.reserve(width * depth);
 		for (int z = 0; z < depth; z++)
@@ -221,13 +240,14 @@ public:
 					}
 				);
 			}
+		*/
 		MeshBuilder *builder = new MeshBuilder();
 		Mesh* mesh = builder->addVector3Attribute("aPosition", positions)
 			->addVector3Attribute("aNormal", normals)
 			->addVector2Attribute("aTexCoord", texCoords)
-			->addVector4Attribute("aTexWeight", texWeights)
+			//->addVector4Attribute("aTexWeight", texWeights)
 			->setIndexBuffer(indices)
-			->Create();		
+			->Create();
 		delete builder;
 		return mesh;
 
@@ -235,6 +255,11 @@ public:
 
 
 private:
+	static float CalcTrapez(float min, float max, float startMax, float endMax, float value)
+	{
+		return value - startMax < 0 ? CalcLienar(min, startMax, value) : 
+			  (endMax - value < 0 ? CalcLienar(endMax, max, value, true) : 1.f);
+	}
 	static float CalcLienar(float min, float max, float value, bool inverse = false)
 	{
 		float range = max - min;

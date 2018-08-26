@@ -6,7 +6,7 @@ class Shader;
 class Uniform
 {
 public:
-	virtual ~Uniform() {}
+	virtual ~Uniform() = default;
 	virtual Uniform* set(Shader* shader, const char* name) = 0;
 	virtual void changeValue(const void* value) = 0;
 };
@@ -16,9 +16,10 @@ class Float : public Uniform
 private:
 	float Value;
 
-	Float() = default;
 public:
+	Float() = delete;
 	Float(const float& value) : Value(value) {}
+	virtual ~Float() override = default;
 
 	virtual Float * set(Shader* shader, const char* name) override
 	{
@@ -42,10 +43,10 @@ class Matrix4 : public Uniform
 private:
 	glm::mat4 Value;
 
-	Matrix4() {}
 public:
+	Matrix4() = delete;
 	Matrix4(const glm::mat4& value) :Value(value) {}
-	virtual ~Matrix4() {}
+	virtual ~Matrix4() override = default;
 
 	virtual Matrix4 * set(Shader* shader, const char* name) override
 	{
@@ -69,12 +70,12 @@ class Vector3 : public Uniform
 private:
 	glm::vec3 Value;
 
-	Vector3() {}
 public:
+	Vector3() = delete;
 	Vector3(const glm::vec3& v) : Value(v)
 	{
 	}
-	virtual ~Vector3() override {}
+	virtual ~Vector3() override = default;
 
 	virtual Vector3 * set(Shader* shader, const char* name) override
 	{

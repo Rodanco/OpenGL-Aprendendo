@@ -26,7 +26,7 @@ public:
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_FACE, GL_LINE);
-		camera = new Camera(glm::vec3(0.f, 20.f, 140.f));
+		camera = new Camera(glm::vec3(0.f, 100.f, 0.f));
 
 		light = new DirectionalLight(
 			glm::vec3(1.f, -1.f, -1.f),
@@ -44,7 +44,8 @@ public:
 		material->setTexture(new Texture("res/Textures/snow.jpg"))
 				->setTexture(new Texture("res/Textures/rock.jpg"))
 				->setTexture(new Texture("res/Textures/grass.jpg"))
-				->setTexture(new Texture("res/Textures/sand.jpg"));
+				->setTexture(new Texture("res/Textures/sand.jpg"))
+				->setTexture("uBlendMapTexture", new Texture("res/Textures/BlendMap.png"));
 		world = new Matrix4(glm::mat4());
 		mesh->setUniform("uWorld", world);
 	}

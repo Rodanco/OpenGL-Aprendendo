@@ -183,7 +183,9 @@ private:
 		{
 			char* errorLog = nullptr;
 			glGetProgramInfoLog(program, 255, nullptr, errorLog);
-			printf("[ERROR SHADER]\nUnable to link Shaders. %s\n", errorLog); __debugbreak();
+			if(!errorLog)
+				printf("[ERROR SHADER]\nUnable to link Shaders. %s\n", errorLog); 
+			__debugbreak();
 		}
 		for (int shader : shaders)
 		{
