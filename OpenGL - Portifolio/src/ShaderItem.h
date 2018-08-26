@@ -5,6 +5,6 @@ class Shader;
 class ShaderItem
 {
 public:
-	virtual ~ShaderItem() {}
+	virtual ~ShaderItem() = default;
 	virtual void apply(Shader* shader) = 0;
 };

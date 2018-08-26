@@ -12,7 +12,7 @@ public:
 		glBindVertexArray(mesh->Id);
 	}
 
-	~MeshBuilder(){}
+	~MeshBuilder() = default;
 
 	MeshBuilder* setIndexBuffer(const GLuint* data, GLuint dataSize)
 	{

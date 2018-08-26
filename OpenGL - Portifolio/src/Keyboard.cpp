@@ -6,9 +6,7 @@ Keyboard::Keyboard()
 {
 }
 
-Keyboard::~Keyboard()
-{
-}
+Keyboard::~Keyboard() = default;
 
 Keyboard * Keyboard::getInstace()
 {

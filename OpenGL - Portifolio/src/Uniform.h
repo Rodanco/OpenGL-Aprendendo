@@ -16,7 +16,7 @@ class Float : public Uniform
 private:
 	float Value;
 
-	Float() {}
+	Float() = default;
 public:
 	Float(const float& value) : Value(value) {}
 
@@ -28,7 +28,7 @@ public:
 
 	void changeValue(const void* value) override
 	{
-		Value = (*((Float*)value)).Value;
+		Value = reinterpret_cast<const Float*>(value)->Value;
 	}
 
 	const float &getValue() const
@@ -55,7 +55,7 @@ public:
 
 	void changeValue(const void* value) override
 	{
-		Value = (*((Matrix4*)value)).Value;
+		Value = reinterpret_cast<const Matrix4*>(value)->Value;
 	}
 
 	glm::mat4& getValue()
@@ -82,9 +82,9 @@ public:
 		return this;
 	}
 
-	virtual void changeValue(const void* value)
+	virtual void changeValue(const void* value) override
 	{
-		Value = (*(Vector3*)value).Value;
+		Value = reinterpret_cast<const Vector3*>(value)->Value;
 	}
 
 	const glm::vec3& getValue() const

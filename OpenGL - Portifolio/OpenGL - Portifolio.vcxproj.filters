@@ -98,6 +98,7 @@
     <None Include="res\Shaders\Shader.frag" />
     <None Include="res\Shaders\phongMT.frag" />
     <None Include="res\Shaders\phongMT.vert" />
+    <None Include=".clang-tidy" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Images\volcano.jpg">

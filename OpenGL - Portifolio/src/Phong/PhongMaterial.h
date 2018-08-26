@@ -60,13 +60,12 @@ public:
 	}
 
 	// Inherited via Material
-	virtual void setShader(Shader * shader) 
+	virtual void setShader(Shader * s) override
 	{
-		if (shader == nullptr)
+		if (s == nullptr)
 			return;
-		if (this->shader != nullptr)
-			delete this->shader;
-		this->shader = shader;
+		delete this->shader;
+		this->shader = s;
 	}
 
 	virtual Shader * getShader() const override

@@ -35,7 +35,7 @@ private:
 		glGenVertexArrays(1, &Id);
 	}
 
-	Mesh(const Mesh& mesh) {}
+	Mesh(const Mesh& mesh) = default;
 
 public:
 	
@@ -70,7 +70,7 @@ public:
 
 	Mesh* draw(Material *material)
 	{
-		if (Attributes.size() == 0)
+		if (Attributes.empty())
 			return this;
 		Shader* shader = material->getShader();
 		glBindVertexArray(Id);

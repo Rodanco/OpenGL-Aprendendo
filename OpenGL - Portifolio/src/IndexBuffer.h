@@ -7,7 +7,7 @@ class IndexBuffer
 private:
 	GLuint Id, Count;
 	
-	IndexBuffer() {}
+	IndexBuffer() = default;
 
 public:
 

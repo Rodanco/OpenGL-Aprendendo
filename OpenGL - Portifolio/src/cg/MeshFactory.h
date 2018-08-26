@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "../MeshBuilder.h"
-#include <time.h>
+#include <ctime>
 #include "SFML/Graphics/Image.hpp"
 
 class MeshFactory
@@ -136,7 +136,7 @@ public:
 		float hd = depth * .5f;
 
 		//Cria��o dos vertices
-		float maxHeight = 0.f;
+		int maxHeight = 0;
 		std::vector<glm::vec3> positions;
 		positions.reserve(width * depth);
 		for (int z = 0; z < depth; z++)
@@ -211,7 +211,7 @@ public:
 			for (int x = 0; x < width; x++)
 			{
 				int tone = img.getPixel(x, z).r;
-				float h = tone / (float)maxHeight;
+				float h = tone / static_cast<float>(maxHeight);
 				texWeights.push_back(
 					{
 						CalcLienar(.75f, 1.f, h, false),

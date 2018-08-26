@@ -72,12 +72,13 @@
   <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\conra\Mega\Outros\glm-0.9.8.5;D:\conra\Mega\Outros\GLFW\include;D:\conra\Mega\Outros\SFML INCLUDES\SFML-2.4.2 - 32bit\include;D:\conra\Mega\Outros\glew-2.1.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GLEW_STATIC;SFML_STATIC;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>D:\conra\Mega\Outros\glew-2.1.0\lib\Release\Win32;D:\conra\Mega\Outros\GLFW\lib-vc2015;D:\conra\Mega\Outros\SFML INCLUDES\SFML-2.4.2 - 32bit\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -158,6 +159,7 @@
     <None Include="res\Shaders\phongMT.vert" />
     <None Include="res\Shaders\Shader.frag" />
     <None Include="res\Shaders\Shader.vert" />
+    <None Include=".clang-tidy" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Images\volcano.jpg" />

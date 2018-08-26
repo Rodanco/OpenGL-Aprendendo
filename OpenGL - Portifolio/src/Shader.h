@@ -19,7 +19,7 @@ private:
 	Shader(unsigned int id):Id(id) {}
 public:
 	
-	~Shader()
+	virtual ~Shader()
 	{
 		glDeleteProgram(Id);
 	}
@@ -152,7 +152,7 @@ private:
 		GLCall(int location = locateVariable(name, type));
 		if (location == -1)
 		{
-			printf("[ERROR SHADER]\Variable name %s doesnt exist!\n", name); __debugbreak();
+			printf("[ERROR SHADER]\nVariable name %s doesnt exist!\n", name); __debugbreak();
 		}
 		m_namesCache[name] = location;
 		return location;
@@ -182,7 +182,7 @@ private:
 		if (linkStatus == GL_FALSE)
 		{
 			char* errorLog = nullptr;
-			glGetProgramInfoLog(program, 255, NULL, errorLog);
+			glGetProgramInfoLog(program, 255, nullptr, errorLog);
 			printf("[ERROR SHADER]\nUnable to link Shaders. %s\n", errorLog); __debugbreak();
 		}
 		for (int shader : shaders)
@@ -219,7 +219,7 @@ private:
 			int length;
 			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
-			char* errorLog = (char*)alloca(length * sizeof(char));
+			auto errorLog = static_cast<char*>(alloca(length * sizeof(char)));
 			glGetShaderInfoLog(shader, length, &length, errorLog);
 			printf("[ERROR SHADER]\nUnable to Compile Shader\n %s\n", errorLog); __debugbreak();
 		}

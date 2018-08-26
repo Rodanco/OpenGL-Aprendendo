@@ -2,7 +2,7 @@
 #include "GL/glew.h"
 #include "TextureParameters.h"
 #include <exception>
-#include <string.h>
+#include <cstring>
 
 #include "Vendor/stb_image/stb_image.h"
 
@@ -19,10 +19,12 @@ public:
 		unsigned char* data = stbi_load(imagePath, &width, &height, &nrChannels, 0);
 		if (!data)
 		{
-			throw std::exception(strncat((char*)"Nao foi possivel abrir a imagem no diretorio: ", imagePath, sizeof(imagePath)));
+			throw std::exception("Nao foi possivel abrir a imagem ");
 		}
 		if (nrChannels < 3)
+		{
 			throw std::exception("A Imagem tem que ser RGB ou RGBA!");
+		}
 		int format = nrChannels == 3 ? GL_RGB : GL_RGBA;
 
 		glGenTextures(1, &m_id);
@@ -32,7 +34,9 @@ public:
 		m_parameters = params;
 		m_parameters.Apply(GL_TEXTURE_2D);
 		if (m_parameters.IsMipMapped())
+		{
 			glGenerateMipmap(GL_TEXTURE_2D);
+		}
 
 		stbi_image_free(data);
 		glBindTexture(GL_TEXTURE_2D, 0);

@@ -9,7 +9,7 @@ private:
 	GLuint ElementSize;
 	GLuint ElementCount;
 
-	ArrayBuffer() {}
+	ArrayBuffer() = default;
 
 public:
 	ArrayBuffer(const void* data, GLuint dataSize, GLuint elementSize)
@@ -58,7 +58,7 @@ public:
 		return this;
 	}
 
-	void draw()
+	const void draw() const
 	{
 		glDrawArrays(GL_TRIANGLES, 0, getCount());
 	}

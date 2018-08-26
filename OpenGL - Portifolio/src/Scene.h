@@ -7,5 +7,5 @@ public:
 	virtual void update(float secs) = 0;
 	virtual void draw() = 0;
 	virtual void deinit() = 0;
-	virtual ~Scene() {}
+	virtual ~Scene() = default;
 };

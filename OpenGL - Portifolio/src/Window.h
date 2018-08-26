@@ -24,6 +24,7 @@ public:
 	Window(Scene *scene, const std::string& title);
 	Window(Scene *scene);
 	Window();
+	virtual ~Window() = default;
 	void show();
 	void SetScene(Scene * scene);
 };

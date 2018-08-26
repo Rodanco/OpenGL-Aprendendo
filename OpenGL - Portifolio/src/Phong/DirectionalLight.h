@@ -15,10 +15,7 @@ public:
 	{
 	}
 
-	virtual ~DirectionalLight() override
-	{
-
-	}
+	virtual ~DirectionalLight() override = default;
 
 	virtual void apply(Shader* shader) override
 	{

@@ -1,5 +1,5 @@
 #pragma once
-#include<stdio.h>
+#include<cstdio>
 #include <GL\glew.h>
 
 #define ASSERT(x) if(!(x)) __debugbreak();
@@ -14,7 +14,7 @@ bool GLLogCall(const char* function, const char* file, unsigned int line)
 {
 	while (GLenum error = glGetError())
 	{		
-		printf("[Erro de OpenGL - %d]: %s\n\tFuncao: %s\n\tArquivo: %s\n\tLinha: %d\n", error, glGetString(error), function, file, line);
+		printf("[Erro de OpenGL - %u]: %s\n\tFuncao: %s\n\tArquivo: %s\n\tLinha: %d\n", error, glGetString(error), function, file, line);
 		return false;
 	}
 	return true;
