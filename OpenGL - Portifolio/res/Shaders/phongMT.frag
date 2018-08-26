@@ -9,8 +9,9 @@ uniform vec3 uSpecularLight;
 uniform vec3 uAmbientMaterial;
 uniform vec3 uDiffuseMaterial;
 uniform vec3 uSpecularMaterial;
-
 uniform float uSpecularPower;
+
+uniform int uTexRepeat;
 
 uniform sampler2D uTex0;
 uniform sampler2D uTex1;
@@ -49,7 +50,7 @@ void main() {
 
     vec2 farCoord = vTexCoord * 10.0;
     vec2 nearCoord = vTexCoord * 50.0;
-	vec4 BMC = texture(uBlendMapTexture, vTexCoord*3);
+	vec4 BMC = texture(uBlendMapTexture, vTexCoord * uTexRepeat);
 	vec4 colour = BMC / (BMC.x + BMC.y + BMC.z + BMC.w);
 	vec4 texelFar = texture(uTex0, farCoord) * colour.x +
                     texture(uTex1, farCoord) * colour.y +

@@ -17,6 +17,7 @@ private:
 	Matrix4 *world;
 	PhongMaterial* material;
 	Light* light;
+	int textureRepeat = 5;
 
 public:
 
@@ -27,15 +28,13 @@ public:
 		glEnable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_FACE, GL_LINE);
 		camera = new Camera(glm::vec3(0.f, 100.f, 0.f));
-
 		light = new DirectionalLight(
 			glm::vec3(1.f, -1.f, -1.f),
 			glm::vec3(.1f,  .1f,  .1f),
 			glm::vec3(1.f,  1.f,  1.f),
 			glm::vec3(1.f,  1.f,  1.f)
 		);
-
-		mesh = MeshFactory::LoadTerrain("res/Images/volcano.jpg", .1f, 3);
+		mesh = MeshFactory::LoadTerrain("res/Images/chess.jpg", .1f, textureRepeat);
 		material = new PhongMaterial(
 			glm::vec3(1.f, 1.f, 1.f),
 			glm::vec3(.9f, .9f, .9f),
@@ -48,6 +47,7 @@ public:
 				->setTexture("uBlendMapTexture", new Texture("res/Textures/BlendMap.png"));
 		world = new Matrix4(glm::mat4());
 		mesh->setUniform("uWorld", world);
+		mesh->setUniform("uTexRepeat", new Int(textureRepeat));
 	}
 	virtual void update(float secs) override
 	{

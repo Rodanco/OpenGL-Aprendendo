@@ -38,6 +38,33 @@ public:
 	}
 };
 
+class Int : public Uniform
+{
+private:
+	int Value;
+
+public:
+	Int() = delete;
+	Int(const int& value) : Value(value) {}
+	virtual ~Int() override = default;
+
+	virtual Int * set(Shader* shader, const char* name) override
+	{
+		shader->setUniform(name, Value);
+		return this;
+	}
+
+	void changeValue(const void* value) override
+	{
+		Value = reinterpret_cast<const Int*>(value)->Value;
+	}
+
+	const int &getValue() const
+	{
+		return Value;
+	}
+};
+
 class Matrix4 : public Uniform
 {
 private:
