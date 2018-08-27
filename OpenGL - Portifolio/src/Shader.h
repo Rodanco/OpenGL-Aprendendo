@@ -55,8 +55,7 @@ public:
 		{
 			GLCall(glEnableVertexAttribArray(attribute));
 			buffer->bind();
-			//GLCall(glVertexAttribFormat(attribute, buffer->getElementSize(), GL_FLOAT, false, 0));
-			GLCall(glVertexAttribPointer(attribute, buffer->getElementSize(), GL_FLOAT, GL_FALSE, 0, 0));
+			GLCall(glVertexAttribPointer(attribute, buffer->getElementSize(), GL_FLOAT, GL_FALSE, 0, nullptr));
 			buffer->unbind();
 		}
 		return this;
@@ -183,7 +182,7 @@ private:
 		{
 			char* errorLog = nullptr;
 			glGetProgramInfoLog(program, 255, nullptr, errorLog);
-			if(!errorLog)
+			if(errorLog)
 				printf("[ERROR SHADER]\nUnable to link Shaders. %s\n", errorLog); 
 			__debugbreak();
 		}
@@ -222,6 +221,7 @@ private:
 			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
 
 			auto errorLog = static_cast<char*>(alloca(length * sizeof(char)));
+			
 			glGetShaderInfoLog(shader, length, &length, errorLog);
 			printf("[ERROR SHADER]\nUnable to Compile Shader\n %s\n", errorLog); __debugbreak();
 		}

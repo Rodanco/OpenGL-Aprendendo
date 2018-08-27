@@ -147,7 +147,7 @@ public:
 				int tone2 = x > 1 ? img.getPixel(x - 1, z).r : tone1;
 				int tone3 = z > 1 ? img.getPixel(x, z - 1).r : tone1;
 				float h = (tone1 + tone2 + tone3) * scale / 3.f;
-				positions.push_back(glm::vec3(x - hw, h, z - hd));
+				positions.emplace_back(glm::vec3(x - hw, h, z - hd));
 				if (maxHeight < tone1)
 					maxHeight = tone1;
 			}
@@ -163,13 +163,13 @@ public:
 				int two = x + (z + 1) * width;
 				int three = x + 1 + (z + 1) * width;
 
-				indices.push_back(zero);
-				indices.push_back(three);
-				indices.push_back(one);
+				indices.emplace_back(zero);
+				indices.emplace_back(three);
+				indices.emplace_back(one);
 
-				indices.push_back(zero);
-				indices.push_back(two);
-				indices.push_back(three);
+				indices.emplace_back(zero);
+				indices.emplace_back(two);
+				indices.emplace_back(three);
 			}
 
 
@@ -202,7 +202,7 @@ public:
 		texCoords.reserve((width) * (depth));
 		for (int z = 0; z < depth; z++)
 			for (int x = 0; x < width; x++)
-				texCoords.push_back({ x * tx, z * ty });
+				texCoords.emplace_back(glm::vec2( x * tx, z * ty ));
 
 		
 		for (int z = 0; z < depth; z++)
@@ -231,7 +231,7 @@ public:
 			{
 				int tone = img.getPixel(x, z).r;
 				float h = tone / static_cast<float>(maxHeight);
-				texWeights.push_back(
+				texWeights.emplace_back(
 					{
 						CalcLienar(.75f, 1.f, h, false),
 						CalcPiramid(.5f, .8f, h),
