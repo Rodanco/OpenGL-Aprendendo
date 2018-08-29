@@ -108,7 +108,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>D:\conra\Mega\Outros\glew-2.1.0\lib\Release\Win32;D:\conra\Mega\Outros\GLFW\lib-vc2015;D:\conra\Mega\Outros\SFML INCLUDES\SFML-2.4.2 - 32bit\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>jpeg.lib;gdi32.lib;opengl32.lib;freetype.lib;winmm.lib;sfml-system-s.lib;sfml-window-s.lib;sfml-graphics-s.lib;glfw3.lib;User32.lib;Gdi32.lib;Shell32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
