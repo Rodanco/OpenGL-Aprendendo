@@ -22,6 +22,9 @@ void Window::init()
 	{
 		Keyboard::getInstace()->set(key, action);
 	};
+
+	KEYBOARD->defineKeyCallback(GLFW_KEY_ESCAPE, [&]() {quit = true; });
+
 	glfwSetKeyCallback(m_window, key_callback);
 
 	const GLFWvidmode *vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -64,7 +67,7 @@ void Window::loop()
 	m_scene->init();
 
 	clock_t start = clock();
-	while (!glfwWindowShouldClose(m_window))
+	while (!quit)
 	{
 		float time = (1.0f*(clock() - start)) / CLOCKS_PER_SEC;
 		start = clock() - 1;

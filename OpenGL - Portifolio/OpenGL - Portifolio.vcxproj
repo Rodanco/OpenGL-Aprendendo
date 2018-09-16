@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="src\ArrayBuffer.h" />
     <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\cg\SkydomeScene.h" />
     <ClInclude Include="src\Phong\DirectionalLight.h" />
     <ClInclude Include="src\cg\MeshFactory.h" />
     <ClInclude Include="src\Phong\PhongMaterial.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="src\Material.h" />
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\MeshBuilder.h" />
+    <ClInclude Include="src\Phong\SkyMaterial.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderItem.h" />
@@ -160,6 +162,8 @@
     <None Include="res\Shaders\Shader.frag" />
     <None Include="res\Shaders\Shader.vert" />
     <None Include=".clang-tidy" />
+    <None Include="res\Shaders\Skydome.frag" />
+    <None Include="res\Shaders\Skydome.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Images\volcano.jpg" />

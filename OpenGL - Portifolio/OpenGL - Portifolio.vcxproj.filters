@@ -92,6 +92,12 @@
     <ClInclude Include="src\Vendor\stb_image\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\cg\SkydomeScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Phong\SkyMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\Shader.vert" />
@@ -99,6 +105,8 @@
     <None Include="res\Shaders\phongMT.frag" />
     <None Include="res\Shaders\phongMT.vert" />
     <None Include=".clang-tidy" />
+    <None Include="res\Shaders\Skydome.vert" />
+    <None Include="res\Shaders\Skydome.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Images\volcano.jpg">

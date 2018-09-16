@@ -34,6 +34,10 @@ void Keyboard::set(int key, int action)
 {
 	if (action == GLFW_PRESS)
 	{
+		if (key == ButtonCallbackPressed.first)
+		{
+			ButtonCallbackPressed.second();
+		}
 		downKeys.insert(key);
 		pressedKeys.insert(key);
 	}
@@ -48,4 +52,10 @@ void Keyboard::update()
 {
 	pressedKeys.clear();
 	releasedKeys.clear();
+}
+
+void Keyboard::defineKeyCallback(int keyPressed, const std::function<void()>& callBack)
+{
+	ButtonCallbackPressed.first = keyPressed;
+	ButtonCallbackPressed.second = callBack;
 }

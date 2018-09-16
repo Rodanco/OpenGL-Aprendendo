@@ -46,7 +46,11 @@ public:
 		for (auto& entry : Attributes)
 			delete entry.second;
 		for (auto& entry : Uniforms)
+		{
+			if (strcmp(entry.first, "uWorld") == 0)
+				continue;
 			delete entry.second;
+		}
 		Attributes.clear();
 		Uniforms.clear();
 	}

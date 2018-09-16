@@ -253,6 +253,55 @@ public:
 
 	}
 
+	static Mesh* createSkydome(int width, int depth, float maxHeight, float distanceWidth = 1.f, float distanceDepth = 1.f)
+	{
+		if (width < 2 || depth < 2)
+		{
+			printf("Digitou numero de vertice menor que 2:\nWidth: %d\nHeight: %d\n", width, depth); __debugbreak();
+		}
+
+		int numberOfVerticesWidth = std::round(width * 1.f / distanceWidth);
+		int numberOfVerticesDepth = std::round(depth * 1.f / distanceDepth);
+
+		float left = width * -.5f;
+		float down = depth * -.5f;
+		int count = numberOfVerticesWidth * numberOfVerticesDepth;
+		std::vector<glm::vec3> vertexData;
+		vertexData.reserve(count);
+
+		float maxSqrDistance = (width * width + depth * depth) * .5f ;
+		const float PI = 3.141592653f;
+		const float constant = PI / maxSqrDistance;
+		for(int i = 0; i < numberOfVerticesWidth; i++)
+			for (int j = 0; j < numberOfVerticesDepth; j++)
+			{
+				float pointLeft = left + i * distanceWidth;
+				float pointDepth = down + j * distanceDepth;
+				float math = (pointDepth * pointDepth + pointLeft * pointLeft) * constant;
+				float h = std::clamp(std::sinf(math), 0.f, 1.f) * maxHeight;
+				glm::vec3 vertice = { pointLeft, h, pointDepth};
+				vertexData.emplace_back(vertice);
+			}
+
+		count = 6 * (numberOfVerticesWidth - 1) * (numberOfVerticesDepth - 1);
+		std::vector<GLuint> indices = std::vector<GLuint>(count);
+		for (int i = 0, id = 0; i < count; i += 6, id++)
+		{
+			if ((id + 1) % numberOfVerticesWidth == 0)
+				id++;
+			indices[i + 0] = id + 0;
+			indices[i + 1] = id + 1;
+			indices[i + 2] = id + numberOfVerticesWidth + 1;
+			indices[i + 3] = id + numberOfVerticesWidth + 1;
+			indices[i + 4] = id + numberOfVerticesWidth;
+			indices[i + 5] = id + 0;
+		}
+
+		MeshBuilder builder;
+		return builder.addVector3Attribute("aPosition", vertexData)
+			   ->setIndexBuffer(indices)->Create();
+
+	}
 
 private:
 	static float CalcTrapez(float min, float max, float startMax, float endMax, float value)

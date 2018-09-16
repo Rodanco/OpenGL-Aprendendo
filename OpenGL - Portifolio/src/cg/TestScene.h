@@ -84,5 +84,6 @@ public:
 		delete light;
 		delete mesh;
 		delete camera;
+		delete world;
 	}
 };

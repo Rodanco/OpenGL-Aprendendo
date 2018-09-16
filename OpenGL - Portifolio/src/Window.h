@@ -9,6 +9,7 @@ class Window
 {
 private:
 	bool initialized = false;
+	bool quit = false;
 	GLFWwindow *m_window;
 	Scene *m_scene;
 	std::string m_title;
