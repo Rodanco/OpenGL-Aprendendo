@@ -149,10 +149,10 @@ private:
 		if (m_namesCache.find(name) != m_namesCache.end())
 			return m_namesCache[name];
 		GLCall(int location = locateVariable(name, type));
-		if (location == -1)
+		/*if (location == -1)
 		{
 			printf("[ERROR SHADER]\nVariable name %s doesnt exist!\n", name); __debugbreak();
-		}
+		}*/
 		m_namesCache[name] = location;
 		return location;
 	}

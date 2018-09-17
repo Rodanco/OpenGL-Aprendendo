@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../MeshBuilder.h"
 #include <ctime>
+#include <limits>
 #include "SFML/Graphics/Image.hpp"
 
 class MeshFactory
@@ -253,52 +254,77 @@ public:
 
 	}
 
-	static Mesh* createSkydome(int width, int depth, float maxHeight, float distanceWidth = 1.f, float distanceDepth = 1.f)
+	static Mesh* createSkydome(int width, int depth, float maxHeight)
 	{
 		if (width < 2 || depth < 2)
 		{
 			printf("Digitou numero de vertice menor que 2:\nWidth: %d\nHeight: %d\n", width, depth); __debugbreak();
 		}
 
-		int numberOfVerticesWidth = std::round(width * 1.f / distanceWidth);
-		int numberOfVerticesDepth = std::round(depth * 1.f / distanceDepth);
-
-		float left = width * -.5f;
-		float down = depth * -.5f;
-		int count = numberOfVerticesWidth * numberOfVerticesDepth;
+		float hw = width * .5f;
+		float hd = depth * .5f;
+		int count = width * depth;
 		std::vector<glm::vec3> vertexData;
 		vertexData.reserve(count);
+		std::vector<glm::vec2> texData;
+		texData.reserve(count);
 
-		float maxSqrDistance = (width * width + depth * depth) * .5f ;
+		//float maxSqrDistance = (width * width + depth * depth) * .5f ;
+		float maxSqrDistance = (width > depth ? width : depth) * .5f ;
 		const float PI = 3.141592653f;
 		const float constant = PI / maxSqrDistance;
-		for(int i = 0; i < numberOfVerticesWidth; i++)
-			for (int j = 0; j < numberOfVerticesDepth; j++)
-			{
+		for(int i = 0; i < width; i++)
+			for (int j = 0; j < depth; j++)
+			{			
+				float ok = glm::length(glm::vec2(i - hw, j - hd));
+				float distX = i - hw, distY = j - hd;
+				auto dist = std::sqrtf(distX * distX + distY * distY);
+				float h = std::clamp(std::cosf(dist * constant), 0.f, 1.f);
+				vertexData.emplace_back(glm::vec3((i - hw) / width, h, (j - hd) / depth));
+				/*float h;
 				float pointLeft = left + i * distanceWidth;
 				float pointDepth = down + j * distanceDepth;
-				float math = (pointDepth * pointDepth + pointLeft * pointLeft) * constant;
-				float h = std::clamp(std::sinf(math), 0.f, 1.f) * maxHeight;
+				/*if (i == 0 || j == 0 || i == numberOfVerticesWidth - 1 || j == numberOfVerticesDepth - 1)
+					h = 0.f;
+				else
+				{
+					float x = pointLeft * pointLeft;
+					float z = pointDepth * pointDepth;
+					float math = (x + z) * constant;
+					h = std::clamp(std::cosf(math), 0.f, 1.f);
+					if (std::abs(h) < std::numeric_limits<float>::epsilon())
+						h = 0.f;
+				}
 				glm::vec3 vertice = { pointLeft, h, pointDepth};
-				vertexData.emplace_back(vertice);
+				vertexData.emplace_back(vertice);*/
+				float s = 1.f - (.35f * i / width);
+				float t = 1.f - (.35f * j / depth);
+				texData.emplace_back(glm::vec2(s, t));
 			}
 
-		count = 6 * (numberOfVerticesWidth - 1) * (numberOfVerticesDepth - 1);
+		count = 6 * (width - 1) * (depth - 1);
 		std::vector<GLuint> indices = std::vector<GLuint>(count);
-		for (int i = 0, id = 0; i < count; i += 6, id++)
+		for (GLuint z = 0; z < depth - 1; z++)
 		{
-			if ((id + 1) % numberOfVerticesWidth == 0)
-				id++;
-			indices[i + 0] = id + 0;
-			indices[i + 1] = id + 1;
-			indices[i + 2] = id + numberOfVerticesWidth + 1;
-			indices[i + 3] = id + numberOfVerticesWidth + 1;
-			indices[i + 4] = id + numberOfVerticesWidth;
-			indices[i + 5] = id + 0;
+			for (GLuint x = 0; x < width - 1; x++)
+			{
+				GLuint zero = x + z * width;
+				GLuint one = (x + 1) + z * width;
+				GLuint two = x + (z + 1) * width;
+				GLuint three = (x + 1) + (z + 1) * width;
+
+				indices.emplace_back(zero);
+				indices.emplace_back(three);
+				indices.emplace_back(one);
+				indices.emplace_back(zero);
+				indices.emplace_back(two);
+				indices.emplace_back(three);
+			}
 		}
 
 		MeshBuilder builder;
 		return builder.addVector3Attribute("aPosition", vertexData)
+			   ->addVector2Attribute("aTexCoord", texData)
 			   ->setIndexBuffer(indices)->Create();
 
 	}

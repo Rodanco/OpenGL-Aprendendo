@@ -19,5 +19,6 @@ void main()
 	vec3 texCloud2 = texture(uTexCloud2, vTexCoord + uTexOffset2).rgb;
 
 	vec3 color = clamp(mix(colorLow, colorHigh, vY) + texCloud1 + texCloud2, 0.0, 1.0);
+	//vec3 color = mix(colorLow, colorHigh, vY);
 	outColor = vec4(color, 1.0);
 }

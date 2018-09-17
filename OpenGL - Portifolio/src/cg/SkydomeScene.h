@@ -35,7 +35,7 @@ public:
 		glEnable(GL_CULL_FACE);
 		glPolygonMode(GL_FRONT_FACE, GL_LINE);
 		world = new Matrix4(glm::mat4());
-		camera = new Camera(glm::vec3(0.f, 100.f, 0.f));
+		camera = new Camera(glm::vec3(145.f, 20.f, 0.f));
 		light = new DirectionalLight(
 			glm::vec3(1.f, -1.f, -1.f),
 			glm::vec3(.1f, .1f, .1f),
@@ -44,7 +44,7 @@ public:
 		);
 
 		//Terreno
-		terrain = MeshFactory::LoadTerrain("res/Images/volcano.jpg", .1f, textureRepeat);
+		terrain = MeshFactory::LoadTerrain("res/Images/river.jpg", .4f, textureRepeat);
 		terrainMaterial = new PhongMaterial(
 			glm::vec3(1.f, 1.f, 1.f),
 			glm::vec3(.9f, .9f, .9f),
@@ -59,18 +59,18 @@ public:
 		terrain->setUniform("uTexRepeat", new Int(textureRepeat));
 
 		//Skydome
-		skydome = MeshFactory::createSkydome(600, 600, 1000, 6.f, 6.f);
-		skydome->setUniform("uWorld", world);
+		skydome = MeshFactory::createSkydome(3, 3, 1);
+		skydome->setUniform("uWorld", new Matrix4(glm::scale(glm::mat4(), glm::vec3(18000.f, 800.f, 18000.f))));
 		skydomeMaterial = new SkyMaterial();
 		skydomeMaterial->setTexture("uTexCloud1", new Texture("res/Textures/cloud1.jpg"))
-			->setTexture("uTexCloud2", new Texture("res/Textures/cloud2.jpg"));
+					   ->setTexture("uTexCloud2", new Texture("res/Textures/cloud2.jpg"));
 	}
 	virtual void update(float secs) override
 	{
 		if (keys->isDown(GLFW_KEY_W))
-			camera->moveFront(secs * 5);
+			camera->moveFront(secs * 20);
 		else if (keys->isDown(GLFW_KEY_S))
-			camera->moveFront(-secs * 5);
+			camera->moveFront(-secs * 20);
 
 		if (keys->isDown(GLFW_KEY_A))
 			camera->rotateYaw(secs);
@@ -78,17 +78,17 @@ public:
 			camera->rotateYaw(-secs);
 
 		if (keys->isDown(GLFW_KEY_RIGHT))
-			camera->strafeRight(-secs * 5);
+			camera->strafeRight(-secs * 20);
 		else if (keys->isDown(GLFW_KEY_LEFT))
-			camera->strafeRight(secs * 5);
+			camera->strafeRight(secs * 20);
 
 		if (keys->isDown(GLFW_KEY_UP))
 			camera->rotatePitch(secs);
 		else if (keys->isDown(GLFW_KEY_DOWN))
 			camera->rotatePitch(-secs);
-
-		cloud1Offset += cloud1Offset * secs;
-		cloud2Offset += cloud2Offset * secs;
+		const float mult = .008f;
+		cloud1Offset += secs * mult;
+		cloud2Offset += secs * mult;
 		skydomeMaterial->setOffset("uTexOffset1", cloud1Offset)->setOffset("uTexOffset2", cloud2Offset);
 	}
 	virtual void draw() override
