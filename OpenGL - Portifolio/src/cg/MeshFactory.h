@@ -270,7 +270,7 @@ public:
 		texData.reserve(count);
 
 		//float maxSqrDistance = (width * width + depth * depth) * .5f ;
-		float maxSqrDistance = (width > depth ? width : depth) * .5f ;
+		float maxSqrDistance = (width < depth ? width : depth) * .5f ;
 		const float PI = 3.141592653f;
 		const float constant = PI / maxSqrDistance;
 		for(int i = 0; i < width; i++)
@@ -297,8 +297,11 @@ public:
 				}
 				glm::vec3 vertice = { pointLeft, h, pointDepth};
 				vertexData.emplace_back(vertice);*/
-				float s = 1.f - (.35f * i / width);
-				float t = 1.f - (.35f * j / depth);
+				/*float s = 1.f - (.35f * i / width);
+				float t = 1.f - (.35f * j / depth);*/
+
+				float s = i * 1.f / width;
+				float t = j * 1.f / depth;
 				texData.emplace_back(glm::vec2(s, t));
 			}
 
@@ -327,6 +330,74 @@ public:
 			   ->addVector2Attribute("aTexCoord", texData)
 			   ->setIndexBuffer(indices)->Create();
 
+	}
+
+
+	static Mesh* createXZSquare(int width, int depth, float y)
+	{
+		float w = (width - 1) * .5f;
+		float d = (depth - 1) * .5f;
+
+		return MeshBuilder()
+			.addVector3Attribute("aPosition", 
+				{
+					glm::vec3(-w, y, -d),
+					glm::vec3(w, y, -d),
+					glm::vec3(-w, y, d),
+					glm::vec3(w, y, d)
+				}
+				)
+			->addVector2Attribute("aTexCoord", 
+				{
+					glm::vec2(0.f, 0.f),
+					glm::vec2(1.f, 0.f),
+					glm::vec2(0.f, 1.f),
+					glm::vec2(1.f, 1.f)
+				}
+				)
+			->addVector3Attribute("aNormal",
+				{
+					glm::vec3(0.f, 0.f, 1.f),
+					glm::vec3(0.f, 0.f, 1.f),
+					glm::vec3(0.f, 0.f, 1.f),
+					glm::vec3(0.f, 0.f, 1.f)
+				}
+				)
+			->setIndexBuffer(
+				{
+					2, 1, 0,
+					3, 1, 2
+				}
+				)
+			->Create();
+	}
+
+	static Mesh* createCanvas()
+	{
+		return MeshBuilder()
+			.addVector2Attribute("aPosition",
+				{
+					glm::vec2(-1.f, 1.f),
+					glm::vec2(1.f, 1.f),
+					glm::vec2(-1.f, -1.f),
+					glm::vec2(1.f, -1.f)
+				}
+			)
+			->addVector2Attribute("aTexCoord",
+				{
+					glm::vec2(0.f, 1.f),
+					glm::vec2(1.f, 1.f),
+					glm::vec2(0.f, 0.f),
+					glm::vec2(1.f, 0.f)
+				}
+			)
+			->setIndexBuffer(
+				{
+					0, 2, 3,
+					0, 3, 1
+				}
+			)
+			->Create();
 	}
 
 private:

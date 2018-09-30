@@ -30,7 +30,7 @@ public:
 		mesh->addAttribute(name, new ArrayBuffer(data, dataSize, elementSize));
 		return this;
 	}
-	
+
 	MeshBuilder* addVector4Attribute(const char* name, const std::vector<glm::vec4>& vector)
 	{
 		std::vector<GLfloat> aux;

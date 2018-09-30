@@ -98,6 +98,21 @@
     <ClInclude Include="src\Phong\SkyMaterial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\postFx\PostFXMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\cg\WaterScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Phong\WaterMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SimpleMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Shaders\Shader.vert" />
@@ -107,6 +122,11 @@
     <None Include=".clang-tidy" />
     <None Include="res\Shaders\Skydome.vert" />
     <None Include="res\Shaders\Skydome.frag" />
+    <None Include="res\Shaders\fxVertexShader.vert" />
+    <None Include="res\Shaders\fxNone.frag" />
+    <None Include="res\Shaders\fxBorders.frag" />
+    <None Include="res\Shaders\water.vert" />
+    <None Include="res\Shaders\water.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Images\volcano.jpg">

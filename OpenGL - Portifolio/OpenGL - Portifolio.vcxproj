@@ -135,6 +135,8 @@
     <ClInclude Include="src\ArrayBuffer.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\cg\SkydomeScene.h" />
+    <ClInclude Include="src\cg\WaterScene.h" />
+    <ClInclude Include="src\FrameBuffer.h" />
     <ClInclude Include="src\Phong\DirectionalLight.h" />
     <ClInclude Include="src\cg\MeshFactory.h" />
     <ClInclude Include="src\Phong\PhongMaterial.h" />
@@ -147,9 +149,12 @@
     <ClInclude Include="src\Mesh.h" />
     <ClInclude Include="src\MeshBuilder.h" />
     <ClInclude Include="src\Phong\SkyMaterial.h" />
+    <ClInclude Include="src\Phong\WaterMaterial.h" />
+    <ClInclude Include="src\postFx\PostFXMaterial.h" />
     <ClInclude Include="src\Scene.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\ShaderItem.h" />
+    <ClInclude Include="src\SimpleMaterial.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\TextureParameters.h" />
     <ClInclude Include="src\Uniform.h" />
@@ -157,6 +162,9 @@
     <ClInclude Include="src\Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="res\Shaders\fxBorders.frag" />
+    <None Include="res\Shaders\fxNone.frag" />
+    <None Include="res\Shaders\fxVertexShader.vert" />
     <None Include="res\Shaders\phongMT.frag" />
     <None Include="res\Shaders\phongMT.vert" />
     <None Include="res\Shaders\Shader.frag" />
@@ -164,6 +172,8 @@
     <None Include=".clang-tidy" />
     <None Include="res\Shaders\Skydome.frag" />
     <None Include="res\Shaders\Skydome.vert" />
+    <None Include="res\Shaders\water.frag" />
+    <None Include="res\Shaders\water.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Images\volcano.jpg" />

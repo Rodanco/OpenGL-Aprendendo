@@ -14,7 +14,7 @@ private:
 
 public:
 
-	SkyMaterial() : Material(), shader(Shader::loadProgram(2, "Skydome.vert", "Skydome.frag")) {}
+	SkyMaterial() : Material(), shader(Shader::loadProgram({ "Skydome.vert", "Skydome.frag" })) {}
 	virtual ~SkyMaterial() override
 	{
 		for (const auto& texture : textures)

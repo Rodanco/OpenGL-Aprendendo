@@ -5,13 +5,14 @@
 #include "../Shader.h"
 #include "../Phong/DirectionalLight.h"
 #include "../Phong/PhongMaterial.h"
+#include "../postFx/PostFXMaterial.h"
+#include "../Phong/WaterMaterial.h"
 #include "../Phong/SkyMaterial.h"
 #include "MeshFactory.h"
 
-class SkydomeScene : public Scene
-{
-private:
 
+class WaterScene : public Scene
+{
 	Keyboard *keys = Keyboard::getInstace();
 	Mesh* terrain, *skydome;
 	Camera *camera;
@@ -23,12 +24,18 @@ private:
 	glm::vec2 cloud1Offset = glm::vec2(.001f, .005f);
 	glm::vec2 cloud2Offset = glm::vec2(-.01f, .001f);
 
+	float WATER_H = 11.0f;
+	Mesh* water;
+	std::unique_ptr<WaterMaterial> waterMaterial;
+
+	Mesh* canvas;
+	FrameBuffer* fb;
+	PostFXMaterial* postFX;
+
 public:
 
-	SkydomeScene() : Scene() {}
 
-	virtual ~SkydomeScene() override = default;
-
+	// Inherited via Scene
 	virtual void init() override
 	{
 		glEnable(GL_DEPTH_TEST);
@@ -63,8 +70,20 @@ public:
 		skydome->setUniform("uWorld", new Matrix4(glm::scale(glm::mat4(), glm::vec3(18000.f, 1000.f, 18000.f))));
 		skydomeMaterial = new SkyMaterial();
 		skydomeMaterial->setTexture("uTexCloud1", new Texture("res/Textures/cloud1.jpg"))
-					   ->setTexture("uTexCloud2", new Texture("res/Textures/cloud2.jpg"));
+			->setTexture("uTexCloud2", new Texture("res/Textures/cloud2.jpg"));
+
+
+		//Agua
+		water = MeshFactory::createXZSquare(400, 300, WATER_H);
+		water->setUniform("uWorld", new Matrix4(glm::mat4()));
+		waterMaterial = std::make_unique<WaterMaterial>();
+
+		//Canvas para o postFX
+		canvas = MeshFactory::createCanvas();
+		fb = FrameBuffer::forCurrentViewport();
+		postFX = PostFXMaterial::defaultPostFX(fb);
 	}
+
 	virtual void update(float secs) override
 	{
 		if (keys->isDown(GLFW_KEY_W))
@@ -91,21 +110,23 @@ public:
 		cloud2Offset += secs * mult;
 		skydomeMaterial->setOffset("uTexOffset1", cloud1Offset)->setOffset("uTexOffset2", cloud2Offset);
 	}
-	virtual void draw() override
+
+	void drawScene()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		drawSky();
 		drawTerrain();
+		drawWater();
 	}
-	virtual void deinit() override
+
+	virtual void draw() override
 	{
-		delete terrainMaterial;
-		delete skydomeMaterial;
-		delete light;
-		delete terrain;
-		delete skydome;
-		delete camera;
-		delete world;
+		fb->bind();
+		drawScene();
+		fb->unbind();
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		canvas->draw(postFX);
 	}
 
 	void drawSky()
@@ -127,5 +148,22 @@ public:
 		Shader* shader = terrainMaterial->getShader();
 		shader->bind()->set(camera)->set(light)->unbind();
 		terrain->draw(terrainMaterial);
+	}
+
+	void drawWater()
+	{
+		waterMaterial->getShader()->bind()->set(camera)->unbind();
+		water->draw(waterMaterial.get());
+	}
+
+	virtual void deinit() override
+	{
+		delete terrainMaterial;
+		delete skydomeMaterial;
+		delete light;
+		delete terrain;
+		delete skydome;
+		delete camera;
+		delete world;
 	}
 };

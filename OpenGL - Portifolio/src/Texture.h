@@ -13,6 +13,15 @@ private:
 	TextureParameters m_parameters;
 
 public:
+	Texture(GLuint width, GLuint height, const TextureParameters& params) : m_parameters(params)
+	{
+		glGenTextures(1, &m_id);
+		glBindTexture(GL_TEXTURE_2D, m_id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+		m_parameters.Apply(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+
 	Texture(const char* imagePath, const TextureParameters& params)
 	{
 		GLsizei width, height, nrChannels;

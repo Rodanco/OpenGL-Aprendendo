@@ -16,7 +16,7 @@ public:
 
 	PhongMaterial(const glm::vec3& ambientColor, const glm::vec3& diffuseColor, const glm::vec3& specularColor, float specularPower)
 		:AmbientColor(ambientColor), DiffuseColor(diffuseColor), SpecularColor(specularColor), 
-		 SpecularPower(specularPower), shader(Shader::loadProgram(2, "phongMT.vert", "phongMT.frag"))
+		SpecularPower(specularPower), shader(Shader::loadProgram({ "phongMT.vert", "phongMT.frag" }))
 	{
 	}
 

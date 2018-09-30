@@ -51,7 +51,7 @@ public:
 		GLuint attribute = findVariable(name, GL_VERTEX_ATTRIB_ARRAY_TYPE);
 		if (buffer == nullptr)
 			glDisableVertexAttribArray(attribute);
-		else
+		else if (attribute != -1)
 		{
 			GLCall(glEnableVertexAttribArray(attribute));
 			buffer->bind();
@@ -115,30 +115,32 @@ public:
 	}
 
 
-	Shader* setUniform(const char* name, const float& value)
+	Shader* setUniform(const char* name, const GLfloat& value)
 	{
 		GLCall(glUniform1f(findVariable(name, GL_UNIFORM), value));
 		return this;
 	}
 
-	Shader* setUniform(const char* name, const int& value)
+	Shader* setUniform(const char* name, const GLint& value)
 	{
 		GLCall(glUniform1i(findVariable(name, GL_UNIFORM), value));
 		return this;
 	}
 
-	static Shader* loadProgram(int size, ...)
+	Shader* setUniform(const char* name, const GLuint& value)
 	{
-		std::vector<unsigned int> shaders;
-		shaders.reserve(size);
-		va_list args;
-		__crt_va_start(args, size);
+		GLCall(glUniform1ui(findVariable(name, GL_UNIFORM), value));
+		return this;
+	}
+
+	static Shader* loadProgram(const std::vector<const char*>& shadersName)
+	{
+		int size = shadersName.size();
+		std::vector<unsigned int> shaders(size);
 		for (short i = 0; i < size; i++)
 		{
-			char* name = __crt_va_arg(args, char*);
-			shaders.push_back(loadShader(name));
+			shaders[i] = loadShader(shadersName[i]);
 		}
-		__crt_va_end(args);
 		return new Shader(linkProgram(shaders));
 	}
 
@@ -180,7 +182,9 @@ private:
 		glGetProgramiv(program, GL_LINK_STATUS, &linkStatus);
 		if (linkStatus == GL_FALSE)
 		{
-			char* errorLog = nullptr;
+			int length;
+			glGetProgramInfoLog(program, 255, &length, nullptr);
+			auto errorLog = static_cast<char*>(alloca(sizeof(char) * length));
 			glGetProgramInfoLog(program, 255, nullptr, errorLog);
 			if(errorLog)
 				printf("[ERROR SHADER]\nUnable to link Shaders. %s\n", errorLog); 
