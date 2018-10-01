@@ -75,13 +75,14 @@ public:
 
 		//Agua
 		water = MeshFactory::createXZSquare(400, 300, WATER_H);
-		water->setUniform("uWorld", new Matrix4(glm::mat4()));
+		water->setUniform("uWorld", new Matrix4(glm::scale(glm::mat4(), glm::vec3(100.f, 1.f, 100.f))));
 		waterMaterial = std::make_unique<WaterMaterial>();
 
 		//Canvas para o postFX
 		canvas = MeshFactory::createCanvas();
 		fb = FrameBuffer::forCurrentViewport();
 		postFX = PostFXMaterial::defaultPostFX(fb);
+		//postFX = new PostFXMaterial("fxSharpen", fb);
 	}
 
 	virtual void update(float secs) override

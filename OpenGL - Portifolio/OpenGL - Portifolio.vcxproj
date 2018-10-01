@@ -164,6 +164,7 @@
   <ItemGroup>
     <None Include="res\Shaders\fxBorders.frag" />
     <None Include="res\Shaders\fxNone.frag" />
+    <None Include="res\Shaders\fxSharpen.frag" />
     <None Include="res\Shaders\fxVertexShader.vert" />
     <None Include="res\Shaders\phongMT.frag" />
     <None Include="res\Shaders\phongMT.vert" />

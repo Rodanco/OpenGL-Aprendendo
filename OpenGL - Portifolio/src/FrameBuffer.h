@@ -7,12 +7,12 @@ class FrameBuffer
 private:
 
 	GLuint id, idDepth;
-	GLuint width, height;
+	GLint width, height;
 
 	std::unique_ptr<Texture> texture;
 
 public:
-	FrameBuffer(GLuint width, GLuint height) : width(width), height(height)
+	FrameBuffer(GLint width, GLint height) : width(width), height(height)
 	{
 		texture = std::make_unique<Texture>(width, height, TextureParameters(GL_LINEAR));
 
@@ -48,12 +48,12 @@ public:
 		return this;
 	}
 
-	GLuint getWidth() const
+	GLint getWidth() const
 	{
 		return width;
 	}
 
-	GLuint getHeight() const
+	GLint getHeight() const
 	{
 		return height;
 	}

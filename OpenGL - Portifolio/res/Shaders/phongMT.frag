@@ -13,6 +13,8 @@ uniform float uSpecularPower;
 
 uniform int uTexRepeat;
 
+uniform bool isClipping;
+
 uniform sampler2D uTex0;
 uniform sampler2D uTex1;
 uniform sampler2D uTex2;
@@ -24,10 +26,16 @@ in vec3 vViewPath;
 in vec2 vTexCoord;
 
 in float vDepth;
+in float vClip;
 
 out vec4 outColor;
 
 void main() {
+
+	if(isClipping && vClip < 0.0)
+	{
+		discard;
+	}
     vec3 L = normalize(uLightDir);
 	vec3 N = normalize(vNormal);
 
@@ -46,7 +54,6 @@ void main() {
     vec3 specular = specularIntensity * uSpecularLight * uSpecularMaterial;
 
     float blendFactor = clamp((vDepth - 0.99) * 100.0, 0.0, 1.0);
-
 
     vec2 farCoord = vTexCoord * 10.0;
     vec2 nearCoord = vTexCoord * 50.0;

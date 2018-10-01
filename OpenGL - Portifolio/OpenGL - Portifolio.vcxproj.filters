@@ -127,6 +127,7 @@
     <None Include="res\Shaders\fxBorders.frag" />
     <None Include="res\Shaders\water.vert" />
     <None Include="res\Shaders\water.frag" />
+    <None Include="res\Shaders\fxSharpen.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Images\volcano.jpg">

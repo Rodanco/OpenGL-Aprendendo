@@ -1,8 +1,8 @@
 #version 430
 
 uniform sampler2D uTexture;
-uniform float width;
-uniform float height;
+uniform int width;
+uniform int height;
 
 in vec2 vTexCoord;
 out vec4 outColor;

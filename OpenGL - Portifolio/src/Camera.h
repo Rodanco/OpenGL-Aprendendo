@@ -10,7 +10,7 @@
 class Camera : public ShaderItem
 {
 private:
-	glm::vec3 Position, Up, Target, TargetDirection;
+	glm::vec3 Position, Up, Target, TargetDirection, Right;
 	float Fov, Near, Far;
 
 	float getAspect()
@@ -22,7 +22,8 @@ private:
 
 	void updateTarget()
 	{
-		Target = Position + TargetDirection;
+		Target = Position - TargetDirection;
+		//Up = glm::cross(TargetDirection, Right);
 	}
 
 public:
@@ -31,7 +32,10 @@ public:
 	{
 	}
 
-	Camera(const glm::vec3& position) : Position(position), Up(glm::vec3(0, 1, 0)), Target(glm::vec3(0, 0, 0)), TargetDirection(glm::normalize(Target - Position)), Fov(glm::radians(60.f)), Near(.1f), Far(10000.f)
+	Camera(const glm::vec3& position) 
+		: Position(position), Up(glm::vec3(0, 1, 0)), Target(glm::vec3(0, 0, 0)), 
+		  TargetDirection(glm::normalize(Position - Target)), Right(glm::normalize(glm::cross(Up, TargetDirection))),
+		  Fov(glm::radians(60.f)), Near(.1f), Far(10000.f)
 	{}
 
 	virtual ~Camera() override = default;
@@ -39,7 +43,7 @@ public:
 
 	void moveFront(float distance)
 	{
-		Position += TargetDirection * distance;
+		Position -= TargetDirection * distance;
 		updateTarget();
 	}
 
