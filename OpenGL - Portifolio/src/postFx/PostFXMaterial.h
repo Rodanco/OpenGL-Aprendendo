@@ -21,6 +21,11 @@ public:
 		return new PostFXMaterial("fxNone", fb);
 	}
 
+	void updatePercentage(float percent)
+	{
+		shader->bind()->setUniform("uPercent", percent)->unbind();
+	}
+
 	void setFrameBuffer(FrameBuffer* fb)
 	{		
 		frameBuffer = fb;
@@ -36,6 +41,7 @@ public:
 	{
 		return shader;
 	}
+
 	virtual void apply() override
 	{
 		shader->setUniform("width", frameBuffer->getWidth())

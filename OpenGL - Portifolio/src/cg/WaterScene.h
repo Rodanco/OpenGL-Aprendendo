@@ -32,6 +32,9 @@ class WaterScene : public Scene
 	FrameBuffer* fb;
 	PostFXMaterial* postFX;
 
+	float percent = 0.f;
+	float sign = 1.f;
+
 public:
 
 
@@ -81,8 +84,8 @@ public:
 		//Canvas para o postFX
 		canvas = MeshFactory::createCanvas();
 		fb = FrameBuffer::forCurrentViewport();
-		postFX = PostFXMaterial::defaultPostFX(fb);
-		//postFX = new PostFXMaterial("fxSharpen", fb);
+		//postFX = PostFXMaterial::defaultPostFX(fb);
+		postFX = new PostFXMaterial("fxSharpen", fb);
 	}
 
 	virtual void update(float secs) override
@@ -106,10 +109,18 @@ public:
 			camera->rotatePitch(secs);
 		else if (keys->isDown(GLFW_KEY_DOWN))
 			camera->rotatePitch(-secs);
+
 		const float mult = .008f;
 		cloud1Offset += secs * mult;
 		cloud2Offset += secs * mult;
 		skydomeMaterial->setOffset("uTexOffset1", cloud1Offset)->setOffset("uTexOffset2", cloud2Offset);
+
+		percent += secs * sign;
+		if (percent >= 1.f)
+			sign = -1.f;
+		else if (percent <= 0.f)
+			sign = 1.f;
+		postFX->updatePercentage(percent);
 	}
 
 	void drawScene()

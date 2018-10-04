@@ -4,6 +4,8 @@ uniform sampler2D uTexture;
 uniform int width;
 uniform int height;
 
+uniform float uPercent;
+
 in vec2 vTexCoord;
 out vec4 outColor;
 
@@ -12,13 +14,19 @@ void main(void)
     float dx = 1.0 / width;
     float dy = 1.0 / height;
 
-	vec3 topColor = -texture(uTexture, vTexCoord + vec2(-dx, 0)).rgb;
-	vec3 leftColor = -texture(uTexture, vTexCoord + vec2(0, -dy)).rgb;
-	vec3 downColor = -texture(uTexture, vTexCoord + vec2(dx, 0)).rgb;
-	vec3 rightColor = -texture(uTexture, vTexCoord + vec2(0, dy)).rgb;
-	vec3 centerColor = texture(uTexture, vTexCoord).rgb * 5;
+	vec3 topColor = -2 * texture(uTexture, vTexCoord + vec2(-dx, 0)).rgb;
+	vec3 leftColor = -2 * texture(uTexture, vTexCoord + vec2(0, -dy)).rgb;
+	vec3 downColor = -2 * texture(uTexture, vTexCoord + vec2(dx, 0)).rgb;
+	vec3 rightColor = -2 * texture(uTexture, vTexCoord + vec2(0, dy)).rgb;
+	vec3 centerColor = texture(uTexture, vTexCoord).rgb * 10;
 
-	outColor = vec4((topColor + leftColor + downColor + rightColor + centerColor), 1.0);
+	vec3 kernelColor = topColor + leftColor + downColor + rightColor + centerColor;
+
+	vec3 originalColor = texture(uTexture, vTexCoord).rgb;
+
+	vec3 result = mix(originalColor, kernelColor, uPercent);
+
+	outColor = vec4(result, 1.0);
 
 
     #/vec3 color1 = texture(uTexture, vTexCoord + vec2(-dx, -dy)).rgb;
